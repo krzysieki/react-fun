@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server" 
+    "start": "webpack-dev-server"
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +18,10 @@
     "react-dom": "^15.3.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "eslint-config-xo": "^0.16.0",
+    "eslint-plugin-react": "^6.3.0"
   }
 }
