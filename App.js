@@ -2,29 +2,65 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      val: 0
+    };
+    this.update = this.update.bind(this);
+  }
+
+  update() {
+    this.setState({
+      val: this.state.val + 1
+    });
+  }
+
+  componentWillMount() {
+    console.log('mounting');
+  }
+
   render() {
-    let txt = this.props.txt;
+    console.log('rendering');
+    return (
+      <button onClick={this.update}>{this.state.val + 1}</button>
+    );
+  }
+
+  componentDidMount() {
+    console.log('mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('bye');
+  }
+}
+
+class Wrapper extends React.Component {
+  constructor() {
+    super();
+  }
+
+  mount() {
+    ReactDOM.render(<App />, document.getElementById('a'))
+  }
+
+  unmount() {
+    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+  }
+
+  render() {
     return (
       <div>
-        <h1>Title</h1>
-        <b>{txt}</b>
+        <button onClick={this.mount.bind(this)}>Mount</button>
+        <button onClick={this.unmount.bind(this)}>Unmount</button>
+        <div id="a"></div>
       </div>
     );
   }
 }
 
-App.propTypes = {
-  txt: React.PropTypes.string,
-  cat: React.PropTypes.number.isRequired
-};
+const Heart = () => <span className="glyphicon glyphicon-heart"></span>
 
-App.defaultProps = {
-  txt: 'this is the default text'
-};
-
-ReactDOM.render(
-  <App cat={5} />,
-  document.getElementById('app')
-);
-
-export default App;
+export default Wrapper;
