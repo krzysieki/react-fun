@@ -43,11 +43,11 @@ class Wrapper extends React.Component {
   }
 
   mount() {
-    ReactDOM.render(<App />, document.getElementById('a'))
+    ReactDOM.render(<App />, document.getElementById('a'));
   }
 
   unmount() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+    ReactDOM.unmountComponentAtNode(document.getElementById('a'));
   }
 
   render() {
