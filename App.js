@@ -5,62 +5,39 @@ class App extends React.Component {
 
   constructor() {
     super();
-    this.state = {
-      val: 0
-    };
-    this.update = this.update.bind(this);
+    this.state = {increasing: false};
   }
 
   update() {
-    this.setState({
-      val: this.state.val + 1
-    });
-  }
-
-  componentWillMount() {
-    console.log('mounting');
-  }
-
-  render() {
-    console.log('rendering');
-    return (
-      <button onClick={this.update}>{this.state.val + 1}</button>
+    ReactDOM.render(
+      <App val={this.props.val + 1} />,
+      document.getElementById('root')
     );
   }
 
-  componentDidMount() {
-    console.log('mounted');
+  componentWillReceiveProps(nextProps) {
+    this.setState({increasing: nextProps.val > this.props.val});
   }
 
-  componentWillUnmount() {
-    console.log('bye');
-  }
-}
-
-class Wrapper extends React.Component {
-  constructor() {
-    super();
-  }
-
-  mount() {
-    ReactDOM.render(<App />, document.getElementById('a'));
-  }
-
-  unmount() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('a'));
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.val % 5 === 0;
   }
 
   render() {
+    console.log(this.state.increasing);
     return (
-      <div>
-        <button onClick={this.mount.bind(this)}>Mount</button>
-        <button onClick={this.unmount.bind(this)}>Unmount</button>
-        <div id="a"></div>
-      </div>
+        <button onClick={this.update.bind(this)}>
+         {this.props.val}
+        </button>
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log(`prevProps: ${prevProps.val}`);
+
   }
 }
 
-const Heart = () => <span className="glyphicon glyphicon-heart"></span>
+App.defaultProps = {val: 0};
 
-export default Wrapper;
+export default App;
