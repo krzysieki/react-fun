@@ -1,43 +1,63 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class App extends React.Component {
+const HOC = (InnerComponent) => class extends React.Component {
 
   constructor() {
     super();
-    this.state = {increasing: false};
+    this.state = {count: 0}
   }
 
   update() {
-    ReactDOM.render(
-      <App val={this.props.val + 1} />,
-      document.getElementById('root')
-    );
+    this.setState({count: this.state.count + 1})
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({increasing: nextProps.val > this.props.val});
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.val % 5 === 0;
+  componentWillMount() {
+    console.log('will mount');
   }
 
   render() {
-    console.log(this.state.increasing);
     return (
-        <button onClick={this.update.bind(this)}>
-         {this.props.val}
-        </button>
+      <InnerComponent
+        {...this.props}
+        {...this.state}
+        update={this.update.bind(this)}
+      />
     );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(`prevProps: ${prevProps.val}`);
-
   }
 }
 
-App.defaultProps = {val: 0};
+class App extends React.Component {
+
+  render() {
+    return (
+        <div>
+          <Button>button</Button>
+          <hr />
+          <LabelHOC>label</LabelHOC>
+        </div>
+    );
+  }
+
+}
+
+const Button = HOC((props) =>
+ <button onClick={props.update}>{props.children} - {props.count}</button>
+);
+
+class Label extends React.Component {
+  componentWillMount() {
+    console.log('label will mount');
+  }
+
+  render() {
+    return (
+      <label onMouseMove={this.props.update}>{this.props.children} - {this.props.count}</label>
+    )
+  }
+}
+
+const LabelHOC = HOC(Label);
+
 
 export default App;
